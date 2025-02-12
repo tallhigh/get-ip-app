@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Geist, Geist_Mono } from "next/font/google";
-import { NextResponse } from "next/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
