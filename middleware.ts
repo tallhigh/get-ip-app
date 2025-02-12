@@ -1,29 +1,46 @@
-import { type NextRequest, NextResponse } from "next/server";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { NextResponse } from "next/server";
 
 // This function can be marked `async` if using `await` inside
-export function middleware(request: NextRequest) {
+export function middleware(request: any) {
   const response = NextResponse.next();
 
   const xForwardedFor = request.headers.get("x-forwarded-for");
-  const ip = xForwardedFor ? xForwardedFor.split(",")[0].trim() : null;
+  const ipisi = xForwardedFor ? xForwardedFor.split(",")[0].trim() : null;
 
-  // eslint-disable-next-line no-console
   console.log(request);
-  // eslint-disable-next-line no-console
+
   console.log(request.headers.get("x-real-ip"));
-  // eslint-disable-next-line no-console
+
   console.log(request.headers.get("x-forwarded-for"));
-  // eslint-disable-next-line no-console
-  console.log("Gelen IP:", ip);
-  return response;
+
+  console.log("ipisi: ", ipisi);
+
+  const forwarded = request.headers["x-forwarded-for"];
+
+  const ip =
+    typeof forwarded === "string"
+      ? forwarded.split(/, /)[0]
+      : request.socket.remoteAddress;
+
+  let yolla = "https://google.com";
+
+  if (ip == "::1") {
+    // talha
+    yolla = "https://facebook.com";
+  } else if (ip == "31.223.84.129") {
+    // erel
+    yolla = "https://topluyoruz.com";
+  } else if (ip == "2a02:ff0:609:ee6e:7d24:73a6:5b8:3df8") {
+    // metecan
+    yolla = "https://www.blackhatworld.com";
+  } else {
+    return response;
+  }
+
+  return NextResponse.redirect(new URL(yolla).toString());
 }
 
 export const config = {
-  matcher: [
-    "/",
-    "/((?!api|_next/static|_next/image|images|favicon.ico|landingpage-bg.png|landingpage-devices.png).*)",
-  ],
+  matcher: ["*"],
 };
-// export const config = {
-//   matcher: ["/", "/((?!api|_next/static|_next/image|images|favicon.ico).*)"],
-// };

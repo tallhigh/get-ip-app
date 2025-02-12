@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { Geist, Geist_Mono } from "next/font/google";
+import { NextResponse } from "next/server";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,7 +34,28 @@ export const getServerSideProps = async ({ req }: any) => {
 
   const ip = typeof forwarded === 'string' ? forwarded.split(/, /)[0] : req.socket.remoteAddress;
 
+  let yolla: any = false;
+
+  if (ip == "176.42.143.66") {
+    // talha
+    yolla = "https://google.com";
+  } else if (ip == "31.223.84.129") {
+    // erel
+    yolla = "https://topluyoruz.com";
+
+  } else if (ip == "2a02:ff0:609:ee6e:7d24:73a6:5b8:3df8") {
+    // metecan
+    yolla = "https://www.blackhatworld.com";
+  }
+
+
   return {
+    ...(yolla && {
+      redirect: {
+        permanent: false,
+        destination: yolla,
+      },
+    }),
     props: { ip },
   };
 };
