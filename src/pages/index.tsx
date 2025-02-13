@@ -49,12 +49,6 @@ export const getServerSideProps = async ({ req }: any) => {
 
 
   return {
-    ...(yolla && {
-      redirect: {
-        permanent: false,
-        destination: yolla,
-      },
-    }),
     props: { ip },
   };
 };
